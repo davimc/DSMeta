@@ -10,16 +10,23 @@ import { Sale } from '../../models/Sale'
 function SalesCard() {
   const min = new Date(new Date().setDate(new Date().getDate() - 365))
   const max = new Date()
+
   const [minDate, setMinDate] = useState(min)
   const [maxDate, setMaxDate] = useState(max)
 
   const [sales, setSales] = useState<Sale[]>([])
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/sales?${minDate}&${maxDate}`).then(response => {
-      setSales(response.data.content)
-    })
-  }, [setMinDate, setMaxDate])
+    const dMin = minDate.toISOString().slice(0, 10)
+    const dMax = maxDate.toISOString().slice(0, 10)
+
+    console.log(dMin, dMax)
+    axios
+      .get(`${BASE_URL}/sales?minDate=${dMin}&maxDate=${dMax}`)
+      .then(response => {
+        setSales(response.data.content)
+      })
+  }, [minDate, maxDate])
   return (
     <div className="dsmeta-card">
       <h2 className="dsmeta-sales-title">Vendas</h2>
@@ -66,7 +73,7 @@ function SalesCard() {
                   <td>{sale.sellerName}</td>
                   <td className="show992">{sale.visited}</td>
                   <td className="show992">{sale.deals}</td>
-                  <td>R$ {sale.amount}</td>
+                  <td>R$ {sale.amount.toFixed(2)}</td>
                   <td>
                     <div className="dsmeta-red-btn-container">
                       <NotificationButton />
