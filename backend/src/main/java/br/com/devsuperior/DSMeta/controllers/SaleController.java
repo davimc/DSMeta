@@ -18,7 +18,11 @@ public class SaleController {
     private SaleService service;
 
     @GetMapping
-    public ResponseEntity<Page<Sale>> findAllPaged(Pageable pageable) {
-        return ResponseEntity.ok().body(service.findAllPaged(pageable));
+    public ResponseEntity<Page<Sale>> findAllPaged(
+            Pageable pageable,
+            @RequestParam(name = "min",defaultValue = "") String minDate,
+            @RequestParam(name = "max",defaultValue = "") String maxDate
+    ) {
+        return ResponseEntity.ok().body(service.findAllPaged(pageable, minDate, maxDate));
     }
 }
