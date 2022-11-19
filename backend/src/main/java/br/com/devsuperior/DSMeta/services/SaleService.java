@@ -15,10 +15,19 @@ public class SaleService {
     @Autowired
     private SaleRepository repository;
 
+    @Autowired
+    private SmsService smsService;
+
     public Page<Sale> findAllPaged(Pageable pageable, String minDate, String maxDate) {
         LocalDate today = LocalDate.now();
         LocalDate min = minDate.equals("") ? today.minusYears(1) : LocalDate.parse(minDate);
         LocalDate max = maxDate.equals("") ? today : LocalDate.parse(maxDate);
         return repository.findSales(pageable, min, max);
+    }
+
+    public void sendSms(Long id) {
+        Sale sale = repository.findById(id).get();
+        String txt = "O vendedor " + sale.getSellerName() + " Atingiu a meta de vendendo: " + sale.getAmount() + " no dia: " + sale.getDate();
+        smsService.sendSms(txt);
     }
 }
