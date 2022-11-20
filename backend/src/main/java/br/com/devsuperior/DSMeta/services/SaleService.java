@@ -27,7 +27,8 @@ public class SaleService {
 
     public void sendSms(Long id) {
         Sale sale = repository.findById(id).get();
-        String txt = "O vendedor " + sale.getSellerName() + " Atingiu a meta de vendendo: R$" + String.format("%.2f",sale.getAmount()) + " no dia: " + sale.getDate();
-        smsService.sendSms(txt);
+        String msg = "O vendedor " + sale.getSellerName() + " foi destaque em " + sale.getDate()
+                + " com um total de R$ " + String.format("%.0f", sale.getAmount());
+        smsService.sendSms(msg);
     }
 }
