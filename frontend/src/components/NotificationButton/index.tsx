@@ -2,13 +2,14 @@ import './styles.css'
 import icon from '../../assets/img/notification-icon.svg'
 import axios from 'axios';
 import { BASE_URL } from '../../utils/request';
+import { toast } from 'react-toastify';
 
 type Props = {
   saleId: number;
 }
 function handlerButton(id: number) {
   axios.get(`${BASE_URL}/sales/${id}/notification`)
-    .then(response => {console.log("SUCESSO")})
+    .then(response => {toast.info("SUCESSO")})
 }
 function NotificationButton({saleId}: Props) {
   
